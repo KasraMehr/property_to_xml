@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('main');
-});
+})->name('home');
 
 Route::prefix('admin')->group(function () {
     Route::get('/add',
-        [PropertyController::class, 'show'])->name('property_page');
+        [PropertyController::class, 'show'])->name('add_property_page');
     Route::post('/add',
         [PropertyController::class, 'add'])->name('add-property');
     Route::post('/update/{id}',

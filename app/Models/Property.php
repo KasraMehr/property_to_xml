@@ -37,6 +37,7 @@ class Property extends Model
         'listing_agent',
         'listing_agent_phone',
         'listing_agent_email',
+        'xml_generated_status',
     ];
 
 }

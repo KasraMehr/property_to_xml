@@ -52,6 +52,15 @@ class PropertyController extends Controller
         // Create a new Property instance and save it to the database
         Property::create($request->all());
 
+        $properties = Property::all();
+        foreach ($properties as $property)
+        {
+            if ($property->property_ref_no == $request['property_ref_no']){
+                $property->property_status = 'Deleted';
+                $property->save();
+            }
+        }
+
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Property added successfully!');
     }
@@ -130,6 +139,8 @@ class PropertyController extends Controller
     {
         // Fetch all properties from the database
         $properties = Property::all();
+        // Check if all the properties have been generated or not
+        $properties_generated_before = true;
 
         // Start building the XML content
         $xmlString = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -137,6 +148,17 @@ class PropertyController extends Controller
 
         // Loop through each property and add it to the XML content
         foreach ($properties as $property) {
+            if(!$property->xml_generated_status){
+                $property->xml_generated_status = true;
+                $property->save();
+                $properties_generated_before = false;
+            }
+            else{
+                continue;
+            }
+            $features_list  = explode(',',$property->features);
+            $images_list = explode(',', $property->images);
+            $videos_list = explode(',', $property->videos);
             $xmlString .= '<Property>';
             // Add property attributes as XML elements
             $xmlString .= '<Property_Ref_No><![CDATA[' . $property->property_ref_no . ']]></Property_Ref_No>';
@@ -148,9 +170,21 @@ class PropertyController extends Controller
             $xmlString .= '<Property_Size_Unit><![CDATA[' . $property->property_size_unit . ']]></Property_Size_Unit>';
             $xmlString .= '<Bedrooms>' . $property->bedrooms . '</Bedrooms>';
             $xmlString .= '<Bathrooms>' . $property->bathrooms . '</Bathrooms>';
-            $xmlString .= '<Features><![CDATA[' . $property->features . ']]></Features>';
+            $xmlString .= '<Features>';
+            foreach ($features_list as $feature){
+                $xmlString .= '<Feature><![CDATA[' . $feature . ']]></Feature>';
+            }
+            $xmlString .= '</Features>';
             $xmlString .= '<Off_plan>' . $property->off_plan . '</Off_plan>';
-            $xmlString .= '<Portals><![CDATA[' . $property->portals . ']]></Portals>';
+            $xmlString .= '<Portals>';
+            if($property->portals == "Bayut,Dubizzle"){
+                $xmlString .= '<Portal><![CDATA[' . 'Bayut' . ']]></Portal>';
+                $xmlString .= '<Portal><![CDATA[' . 'Dubizzle' . ']]></Portal>';
+            }
+            else{
+                $xmlString .= '<Portal><![CDATA[' . $property->portals . ']]></Portal>';
+            }
+            $xmlString .= '</Portals>';
             $xmlString .= '<Last_Updated>' . $property->last_updated . '</Last_Updated>';
             $xmlString .= '<Property_Title><![CDATA[' . $property->property_title . ']]></Property_Title>';
             $xmlString .= '<Property_Description><![CDATA[' . $property->property_description . ']]></Property_Description>';
@@ -158,8 +192,16 @@ class PropertyController extends Controller
             $xmlString .= '<Property_Description_AR><![CDATA[' . $property->property_description_ar . ']]></Property_Description_AR>';
             $xmlString .= '<Price>' . $property->price . '</Price>';
             $xmlString .= '<Rent_Frequency><![CDATA[' . $property->rent_frequency . ']]></Rent_Frequency>';
-            $xmlString .= '<Images><![CDATA[' . $property->images . ']]></Images>';
-            $xmlString .= '<Videos><![CDATA[' . $property->videos . ']]></Videos>';
+            $xmlString .= '<Images>';
+            foreach ($images_list as $image){
+                $xmlString .= '<Image><![CDATA[' . $image . ']]></Image>';
+            }
+            $xmlString .= '</Images>';
+            $xmlString .= '<Videos>';
+            foreach ($videos_list as $video){
+                $xmlString .= '<Video><![CDATA[' . $video . ']]></Video>';
+            }
+            $xmlString .= '</Videos>';
             $xmlString .= '<City><![CDATA[' . $property->city . ']]></City>';
             $xmlString .= '<Locality><![CDATA[' . $property->locality . ']]></Locality>';
             $xmlString .= '<Sub_Locality><![CDATA[' . $property->sub_locality . ']]></Sub_Locality>';
@@ -178,7 +220,12 @@ class PropertyController extends Controller
             'Content-Type' => 'text/xml',
         ];
 
-        // Return the XML content as a response
-        return Response::make($xmlString, 200, $headers);
+        // Return the XML content as a response if it has not been generated before, else don't show it.
+        if(!$properties_generated_before){
+            return Response::make($xmlString, 200, $headers);
+        }
+        else{
+            return redirect()->back()->with('error', 'no new data has been inserted for xml generation!');
+        }
     }
 }

@@ -9,7 +9,7 @@
             </div>
             <div class="card text-center" style="width: 20rem">
                 <img src="{{asset('images/property-color-icon.svg')}}" class="card-img-top" alt="..."><br>
-                <a href="{{route('add_property_page')}}"><button type="button" class="btn btn-primary">add property</button></a>
+                <a href="{{route('add_property_page')}}"><button type="button" class="btn btn-primary mt-3">add property</button></a>
             </div>
         </div>
         <div class="col">
@@ -22,6 +22,12 @@
             </div>
         </div>
     </div>
+    <br>
+    @if(session('error'))
+        <div style="color: red;"><h3>{{ session('error') }}</h3></div>
+    @endif
+    <br>
+
 </div>
 
 @endsection

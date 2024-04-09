@@ -3,7 +3,7 @@
 @section('content')
 <h2>Add Property</h2>
 @if(session('success'))
-    <div style="color: green;">{{ session('success') }}</div>
+    <div style="color: green;"><h3>{{ session('success') }}</h3></div>
 @endif
 <div class="card" style="width: 50rem; background-color: #bee5eb">
     <div class="card-body">
@@ -18,7 +18,7 @@
                         <input type="text" id="property_ref_no" class="form-control" name="property_ref_no" value="{{ old('property_ref_no') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="permit_number" class="form-label">Permit Number:</label><br>
+                        <label for="permit_number" class="form-label">Permit Number</label><br>
                         <input type="text" id="permit_number" name="permit_number" class="form-control" value="{{ old('permit_number') }}"><br>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                         <input type="number" id="property_size_unit" name="property_size_unit" class="form-control" value="{{ old('property_size_unit') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="bedrooms" class="form-label">Bedrooms:</label><br>
+                        <label for="bedrooms" class="form-label">Bedrooms</label><br>
                         <input type="number" id="bedrooms" name="bedrooms" class="form-control" value="{{ old('bedrooms') }}"><br>
                     </div>
                 </div>
@@ -94,14 +94,14 @@
 
 
             <div class="container text-center">
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col">
-                        <label for="bathrooms" class="form-label">Bathrooms:</label><br>
+                        <label for="bathrooms" class="form-label">Bathrooms</label><br>
                         <input type="number" id="bathrooms" name="bathrooms" class="form-control" value="{{ old('bathrooms') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="features" class="form-label">Features:</label><br>
-                        <input type="text" id="features" name="features" class="form-control" value="{{ old('features') }}"><br>
+                        <label for="features" class="form-label">Features</label><br>
+                        <input type="text" id="features" name="features" class="form-control" value="{{ old('features') }}"><sub>Separate Features with commas</sub><br>
                     </div>
                 </div>
             </div>
@@ -121,43 +121,39 @@
                         <select id="portals" name="portals" class="form-control">
                             <option value="Bayut" {{ old('portals') == '1' ? 'selected' : '' }}>Bayut</option>
                             <option value="Dubizzle" {{ old('portals') == '0' ? 'selected' : '' }}>Dubizzle</option>
+                            <option value="Bayut,Dubizzle" {{ old('portals') == '0' ? 'selected' : '' }}>both</option>
                         </select><br>
-                        <label for="portals" class="form-label">Portals:</label><br>
-                        <input type="text" id="portals" name="portals" class="form-control" value="{{ old('portals') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="last_updated" class="form-label">Last Updated:</label><br>
+                        <label for="last_updated" class="form-label">Last Updated</label><br>
                         <input type="date" id="last_updated" name="last_updated" class="form-control" value="{{ old('last_updated') }}"><br>
                     </div>
                 </div>
             </div>
-
+            <hr>
 
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
-                        <label for="property_title" class="form-label">Property Title:</label><br>
+                        <label for="property_title" class="form-label">Property Title</label><br>
                         <input type="text" id="property_title" name="property_title" class="form-control" value="{{ old('property_title') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="property_description" class="form-label">Property Description:</label><br>
+                        <label for="property_description" class="form-label">Property Description</label><br>
                         <textarea id="property_description" class="form-control" name="property_description">{{ old('property_description') }}</textarea><br>
                     </div>
                 </div>
             </div>
 
-
-
             <div class="container text-center">
-                <!--TODO: text decoration from right-->
                 <div class="row">
                     <div class="col">
-                        <label for="property_title_ar" class="form-label">Arabic Property Title:</label><br>
-                        <input type="text" id="property_title_ar" name="property_title_ar" class="form-control" value="{{ old('property_title_ar') }}"><br>
+                        <label for="property_title_ar" class="form-label">Arabic Property Title</label><br>
+                        <input type="text" id="property_title_ar" dir="rtl" name="property_title_ar" class="form-control" value="{{ old('property_title_ar') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="property_description_ar" class="form-label">Arabic Property Description:</label><br>
-                        <textarea id="property_description_ar" class="form-control" name="property_description_ar">{{ old('property_description_ar') }}</textarea><br>
+                        <label for="property_description_ar" class="form-label">Arabic Property Description</label><br>
+                        <textarea id="property_description_ar" class="form-control" dir="rtl" name="property_description_ar">{{ old('property_description_ar') }}</textarea><br>
                     </div>
                 </div>
             </div>
@@ -167,12 +163,17 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
-                        <label for="price" class="form-label">Price:</label><br>
+                        <label for="price" class="form-label">Price</label><br>
                         <input type="number" id="price" name="price" class="form-control" value="{{ old('price') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="rent_frequency" class="form-label">Rent Frequency:</label><br>
-                        <input type="text" id="rent_frequency" name="rent_frequency" class="form-control" value="{{ old('rent_frequency') }}"><br>
+                        <label for="rent_frequency" class="form-label">Rent Frequency</label><br>
+                        <select id="rent_frequency" name="rent_frequency" class="form-control">
+                            <option class="form-control" value="Daily" {{ old('rent_frequency') == '1' ? 'selected' : '' }}>Daily</option>
+                            <option class="form-control" value="Weekly" {{ old('rent_frequency') == '0' ? 'selected' : '' }}>Weekly</option>
+                            <option class="form-control" value="Monthly" {{ old('rent_frequency') == '0' ? 'selected' : '' }}>Monthly</option>
+                            <option class="form-control" value="Yearly" {{ old('rent_frequency') == '0' ? 'selected' : '' }}>Yearly</option>
+                        </select><br>
                     </div>
                 </div>
             </div>
@@ -183,12 +184,12 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
-                        <label for="images" class="form-label">Images:</label><br>
-                        <input type="text" id="images" name="images" class="form-control" value="{{ old('images') }}"><br>
+                        <label for="images" class="form-label">Images</label><br>
+                        <input type="text" id="images" name="images" class="form-control" value="{{ old('images') }}"><sub>Separate Images with commas</sub><br>
                     </div>
                     <div class="col">
-                        <label for="videos" class="form-label">Videos:</label><br>
-                        <input type="text" id="videos" name="videos" class="form-control" value="{{ old('videos') }}"><br>
+                        <label for="videos" class="form-label">Videos</label><br>
+                        <input type="text" id="videos" name="videos" class="form-control" value="{{ old('videos') }}"><sub>Separate Videos with commas</sub><br>
                     </div>
                 </div>
             </div>
@@ -199,11 +200,11 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
-                        <label for="city" class="form-label">City:</label><br>
+                        <label for="city" class="form-label">City</label><br>
                         <input type="text" id="city" name="city" class="form-control" value="{{ old('city') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="locality" class="form-label">Locality:</label><br>
+                        <label for="locality" class="form-label">Locality</label><br>
                         <input type="text" id="locality" name="locality" class="form-control" value="{{ old('locality') }}"><br>
                     </div>
                 </div>
@@ -212,11 +213,11 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
-                        <label for="sub_locality" class="form-label">Sub Locality:</label><br>
+                        <label for="sub_locality" class="form-label">Sub Locality</label><br>
                         <input type="text" id="sub_locality" name="sub_locality" class="form-control" value="{{ old('sub_locality') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="tower_name" class="form-label">Tower Name:</label><br>
+                        <label for="tower_name" class="form-label">Tower Name</label><br>
                         <input type="text" id="tower_name" name="tower_name" class="form-control" value="{{ old('tower_name') }}"><br>
                     </div>
                 </div>
@@ -228,15 +229,15 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
-                        <label for="listing_agent" class="form-label">Listing Agent:</label><br>
+                        <label for="listing_agent" class="form-label">Listing Agent</label><br>
                         <input type="text" id="listing_agent" name="listing_agent" class="form-control" value="{{ old('listing_agent') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="listing_agent_phone" class="form-label">Listing Agent Phone:</label><br>
-                        <input type="text" id="listing_agent_phone" name="listing_agent_phone" class="form-control" value="{{ old('listing_agent_phone') }}"><br>
+                        <label for="listing_agent_phone" class="form-label">Listing Agent Phone</label><br>
+                        <input type="tel" id="listing_agent_phone" name="listing_agent_phone" class="form-control" value="{{ old('listing_agent_phone') }}"><br>
                     </div>
                     <div class="col">
-                        <label for="listing_agent_email" class="form-label">Listing Agent Email:</label><br>
+                        <label for="listing_agent_email" class="form-label">Listing Agent Email</label><br>
                         <input type="email" id="listing_agent_email" name="listing_agent_email" class="form-control" value="{{ old('listing_agent_email') }}"><br><br>
                     </div>
                 </div>

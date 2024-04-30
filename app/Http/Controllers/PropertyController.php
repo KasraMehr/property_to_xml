@@ -62,7 +62,7 @@ class PropertyController extends Controller
         }
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Property added successfully!');
+        return redirect('/')->with('success', 'Property added successfully!');
     }
 
     // Method for updating an existing property

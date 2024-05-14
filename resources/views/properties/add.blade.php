@@ -185,11 +185,11 @@
                 <div class="row">
                     <div class="col">
                         <label for="images" class="form-label">Images</label><br>
-                        <input type="text" id="images" name="images" class="form-control" value="{{ old('images') }}"><sub>Separate Images with commas</sub><br>
+                        <input type="text" id="images" name="images" class="form-control" value="{{ old('images') }}" multiple><sub>Separate Images with commas</sub><br>
                     </div>
                     <div class="col">
                         <label for="videos" class="form-label">Videos</label><br>
-                        <input type="text" id="videos" name="videos" class="form-control" value="{{ old('videos') }}"><sub>Separate Videos with commas</sub><br>
+                        <input type="text" id="videos" name="videos" class="form-control" value="{{ old('videos') }}" multiple><sub>Separate Videos with commas</sub><br>
                     </div>
                 </div>
             </div>

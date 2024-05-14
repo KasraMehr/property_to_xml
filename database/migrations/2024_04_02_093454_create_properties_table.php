@@ -34,8 +34,6 @@ class CreatePropertiesTable extends Migration
             $table->text('property_description_ar')->nullable();
             $table->decimal('price', 10, 2)->nullable();
             $table->string('rent_frequency')->nullable();
-            $table->text('images')->nullable();
-            $table->text('videos')->nullable();
             $table->string('city')->nullable();
             $table->string('locality')->nullable();
             $table->string('sub_locality')->nullable();

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     use HasFactory;
+
+    protected $table = 'properties';
     protected $fillable = [
         'property_ref_no',
         'permit_number',
@@ -39,5 +41,15 @@ class Property extends Model
         'listing_agent_email',
         'xml_generated_status',
     ];
+
+    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PropertyImages::class);
+    }
+
+    public function videos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PropertyVideos::class);
+    }
 
 }

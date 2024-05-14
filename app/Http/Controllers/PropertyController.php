@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class PropertyController extends Controller
 {
-    public function show(){
+    public function show(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    {
         return view('properties.add');
     }
 
-    public function add(Request $request)
+    protected function validator(Request $request): \Illuminate\Validation\Validator
     {
-        $validator = Validator::make($request->all(), [
+        return Validator::make($request->all(), [
             'property_ref_no' => 'required|string|max:255',
             'permit_number' => 'nullable|string|max:255',
             'property_status' => 'nullable|string|max:255',
@@ -44,13 +45,19 @@ class PropertyController extends Controller
             'listing_agent_phone' => 'nullable|string|max:255',
             'listing_agent_email' => 'nullable|email|max:255',
         ]);
+    }
+
+    public function add(Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
+    {
+        $validator = validator((array)$request);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         // Create a new Property instance and save it to the database
-        Property::create($request->all());
+        //TODO: add the images and videos
+        Property::create($validator);
 
         $properties = Property::all();
         foreach ($properties as $property)
@@ -67,35 +74,7 @@ class PropertyController extends Controller
 
     // Method for updating an existing property
     public function update(Request $request, $id){
-        $validator = Validator::make($request->all(), [
-            'property_ref_no' => 'required|string|max:255',
-            'permit_number' => 'nullable|string|max:255',
-            'property_status' => 'nullable|string|max:255',
-            'property_purpose' => 'required|string|max:255',
-            'property_type' => 'required|string|max:255',
-            'property_size' => 'nullable|numeric',
-            'property_size_unit' => 'nullable|string|max:255',
-            'bedrooms' => 'nullable|integer',
-            'bathrooms' => 'nullable|integer',
-            'off_plan' => 'nullable|boolean',
-            'portals' => 'nullable|string|max:255',
-            'last_updated' => 'nullable|date',
-            'property_title' => 'required|string|max:255',
-            'property_description' => 'nullable|string',
-            'property_title_ar' => 'nullable|string|max:255',
-            'property_description_ar' => 'nullable|string',
-            'price' => 'nullable|numeric',
-            'rent_frequency' => 'nullable|string|max:255',
-            'images' => 'nullable|string',
-            'videos' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'locality' => 'nullable|string|max:255',
-            'sub_locality' => 'nullable|string|max:255',
-            'tower_name' => 'nullable|string|max:255',
-            'listing_agent' => 'nullable|string|max:255',
-            'listing_agent_phone' => 'nullable|string|max:255',
-            'listing_agent_email' => 'nullable|email|max:255',
-        ]);
+        $validator = validator((array)$request);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -117,7 +96,7 @@ class PropertyController extends Controller
     }
 
     // Method for deleting an existing property
-    public function delete($id)
+    public function delete($id): \Illuminate\Http\RedirectResponse
     {
         $property = Property::find($id);
 
@@ -135,7 +114,7 @@ class PropertyController extends Controller
     }
 
 
-    public function generateXmlFeed()
+    public function generateXmlFeed(): \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
     {
         // Fetch all properties from the database
         $properties = Property::all();
